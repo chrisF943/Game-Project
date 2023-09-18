@@ -1,5 +1,5 @@
 import java.io.Serializable;
-//test
+
 public class GameState implements Serializable {
     private int spacesMoved;
     private int coinAmount;
