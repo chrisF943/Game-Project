@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Game {
@@ -13,6 +14,8 @@ public class Game {
         int randomNumber2 = random.nextInt(10);
         int totalRoll = randomNumber + randomNumber2;
         gameState.setSpacesMoved(gameState.getSpacesMoved() + totalRoll);
+
+        keyPoints(gameState);
 
         if (gameState.getSpacesMoved() >= 50) {
             System.out.println("Game over");
@@ -52,6 +55,18 @@ public class Game {
             bw.write(csvLine);
         } catch (IOException e) {
             System.out.println("Error writing file: " + e);
+        }
+    }
+
+    public static void keyPoints(GameState gameState) {
+        HashMap<Integer, String> keyPoints = new HashMap<>();
+        keyPoints.put(0, "Game Start");
+        keyPoints.put(1,"Play Mini Game");
+        keyPoints.put(2,"Deposit Coins In Bank");
+        keyPoints.put(3,"Withdraw Coins From Bank");
+        System.out.println(keyPoints.get(0));
+        if (gameState.getSpacesMoved() > 10) {
+            System.out.println(keyPoints.get(1));
         }
     }
 }//end class
