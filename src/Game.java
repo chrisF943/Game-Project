@@ -1,14 +1,20 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Game {
 
     private static final String GAME_STATE_FILE = "gameState.csv";
 
+
     public static void main(String[] args) {
         Random random = new Random();
         GameState gameState = readGameStateFromFile();
+
+        if (gameState.getSpacesMoved() == 0) {
+            System.out.println("Game Start");
+        }
 
         int randomNumber = random.nextInt(10);
         int randomNumber2 = random.nextInt(10);
@@ -16,13 +22,6 @@ public class Game {
         gameState.setSpacesMoved(gameState.getSpacesMoved() + totalRoll);
 
         keyPoints(gameState);
-
-        if (gameState.getSpacesMoved() >= 50) {
-            System.out.println("Game over");
-            gameState.setSpacesMoved(0);
-            gameState.setCoinAmount(0);
-            gameState.setStarAmount(0);
-        }
 
         System.out.println("You rolled: " + totalRoll);
         System.out.println("Total spaces moved: " + gameState.getSpacesMoved());
@@ -59,14 +58,30 @@ public class Game {
     }
 
     public static void keyPoints(GameState gameState) {
-        HashMap<Integer, String> keyPoints = new HashMap<>();
-        keyPoints.put(0, "Game Start");
-        keyPoints.put(1,"Play Mini Game");
-        keyPoints.put(2,"Deposit Coins In Bank");
-        keyPoints.put(3,"Withdraw Coins From Bank");
-        System.out.println(keyPoints.get(0));
-        if (gameState.getSpacesMoved() > 10) {
-            System.out.println(keyPoints.get(1));
+        if (gameState.getSpacesMoved() >= 50 || gameState.getStarAmount() == 1) {
+            System.out.println("Game over");
+            gameState.setSpacesMoved(0);
+            gameState.setCoinAmount(0);
+            gameState.setStarAmount(0);
+        }
+
+    }
+
+    public static void foundStar(GameState gameState) {
+        Scanner input = new Scanner(System.in);
+        System.out.println("You have found a star!");
+        char choice;
+        if(gameState.getCoinAmount() >= 25) {
+            System.out.println("Would you like to buy the star? (y/n)");
+            choice = input.next().charAt(0);
+            if(choice == 'y') {
+                gameState.setStarAmount(gameState.getStarAmount() + 1);
+                gameState.setCoinAmount(gameState.getCoinAmount() - 25);
+            }else if (choice == 'n') {
+                System.out.println("Okay, if you say so!");
+            }
+        }else {
+            System.out.println("You don't have enough coins to buy the star");
         }
     }
 }//end class
