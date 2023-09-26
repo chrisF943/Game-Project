@@ -4,16 +4,18 @@ public class GameState implements Serializable {
     private int spacesMoved;
     private int coinAmount;
     private int starAmount;
+    private int starLocation;
 
 
     public GameState(){
 
     }
 
-    public GameState (int spacesMoved, int coinAmount, int starAmount){
+    public GameState (int spacesMoved, int coinAmount, int starAmount, int starLocation){
         this.spacesMoved = spacesMoved;
         this.coinAmount = coinAmount;
         this.starAmount = starAmount;
+        this.starLocation = starLocation;
     }
 
     public int getSpacesMoved() {
@@ -40,12 +42,21 @@ public class GameState implements Serializable {
         this.starAmount = starAmount;
     }
 
+    public int getStarLocation() {
+        return starLocation;
+    }
+
+    public void setStarLocation(int starLocation) {
+        this.starLocation = starLocation;
+    }
+
     @Override
     public String toString() {
         return "GameState{" +
                 "spacesMoved=" + spacesMoved +
                 ", coinAmount=" + coinAmount +
                 ", starAmount=" + starAmount +
+                ", starLocation=" + starLocation +
                 '}';
     }
 }

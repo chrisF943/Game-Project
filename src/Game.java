@@ -16,12 +16,18 @@ public class Game {
             System.out.println("Game Start");
         }
 
+        int starSpot = 0;
+        if (gameState.getSpacesMoved() == 0) {
+            starSpot = random.nextInt(15, 50);
+        }
+
         int randomNumber = random.nextInt(10);
         int randomNumber2 = random.nextInt(10);
         int totalRoll = randomNumber + randomNumber2;
         gameState.setSpacesMoved(gameState.getSpacesMoved() + totalRoll);
+        gameState.setStarLocation(gameState.getStarLocation() + starSpot);
 
-        keyPoints(gameState);
+        endGame(gameState);
 
         System.out.println("You rolled: " + totalRoll);
         System.out.println("Total spaces moved: " + gameState.getSpacesMoved());
@@ -39,7 +45,8 @@ public class Game {
                 int spacesMoved = Integer.parseInt(parts[0]);
                 int coinAmount = Integer.parseInt(parts[1]);
                 int starAmount = Integer.parseInt(parts[2]);
-                return new GameState(spacesMoved, coinAmount, starAmount);
+                int starLocation = Integer.parseInt(parts[3]);
+                return new GameState(spacesMoved, coinAmount, starAmount, starLocation);
             }
         } catch (IOException | NumberFormatException e) {
             System.out.println("Error reading file: " + e);
@@ -49,20 +56,21 @@ public class Game {
 
     public static void writeGameStateToFile(GameState gameState) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(GAME_STATE_FILE))) {
-            String csvLine = String.format("%d,%d,%d",
-                    gameState.getSpacesMoved(), gameState.getCoinAmount(), gameState.getStarAmount());
+            String csvLine = String.format("%d,%d,%d,%d",
+                    gameState.getSpacesMoved(), gameState.getCoinAmount(), gameState.getStarAmount(), gameState.getStarLocation());
             bw.write(csvLine);
         } catch (IOException e) {
             System.out.println("Error writing file: " + e);
         }
     }
 
-    public static void keyPoints(GameState gameState) {
+    public static void endGame(GameState gameState) {
         if (gameState.getSpacesMoved() >= 50 || gameState.getStarAmount() == 1) {
             System.out.println("Game over");
             gameState.setSpacesMoved(0);
             gameState.setCoinAmount(0);
             gameState.setStarAmount(0);
+            gameState.setStarLocation(0);
         }
 
     }
